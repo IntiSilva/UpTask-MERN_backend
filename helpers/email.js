@@ -1,21 +1,14 @@
-import nodemailer from "nodemailer";
+import sgMail from "@sendgrid/mail"
 
 export const emailRegister = async (data) => {
   const { email, name, token } = data;
 
-  const transport = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+  sgMail.setApiKey(process.env.EMAIL_API_KEY)
 
-  // Email information
+  // Email Message
 
-  const info = await transport.sendMail({
-    from: '"UpTask - Projects Administrator" <accounts@uptask.com>',
+  const msg = {
+    from: 'itsilvaudemy@gmail.com',
     to: email,
     subject: "UpTask - Confirm your account",
     text: "Confirm your account in UpTask",
@@ -24,29 +17,21 @@ export const emailRegister = async (data) => {
 
     <a href="${process.env.FRONTEND_URL}/confirm/${token}">Confirm Account</a>
 
-    <p>If you did not create this account, you can ignore the message</p>
+    <p>If you did not create this account, you can ignore the message</p>`,
+  };
 
-
-    `,
-  });
+  sgMail.send(msg)
 };
 
 export const emailForgotPassword = async (data) => {
   const { email, name, token } = data;
 
-  const transport = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+  sgMail.setApiKey(process.env.EMAIL_API_KEY)
 
-  // Email Info
+  // Email Message
 
-  const info = await transport.sendMail({
-    from: '"UpTask - Projects Administrator" <accounts@uptask.com>',
+  const msg = {
+    from: 'itsilvaudemy@gmail.com',
     to: email,
     subject: "UpTask - Restore your Password",
     text: "Restore your Password",
@@ -56,9 +41,8 @@ export const emailForgotPassword = async (data) => {
 
     <a href="${process.env.FRONTEND_URL}/forgot-password/${token}">Restore your Password</a>
 
-    <p>If you did not requested this email, you can ignore the message</p>
+    <p>If you did not requested this email, you can ignore the message</p>`,
+  };
 
-
-    `,
-  });
+  sgMail.send(msg)
 };
