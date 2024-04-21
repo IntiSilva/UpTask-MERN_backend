@@ -30,6 +30,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Simple status check endpoint to wake up the service
+app.get('/api/status', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Backend active!' });
+});
+
 // Routing
 app.use("/api/users", userRoutes);
 app.use("/api/projects", projectRoutes);
